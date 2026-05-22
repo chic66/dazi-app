@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background-color: #FFFBF7;
+    color: #2D3436;
+    overscroll-behavior: none;
+  }
+
+  ::selection {
+    background-color: #FFE8E8;
+    color: #FF6B6B;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white font-medium py-3 px-6 rounded-full
+           shadow-lg shadow-primary/25 active:scale-95 transition-all duration-200;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-white font-medium py-3 px-6 rounded-full
+           shadow-lg shadow-secondary/25 active:scale-95 transition-all duration-200;
+  }
+
+  .card {
+    @apply bg-surface rounded-2xl shadow-md;
+  }
+
+  .input {
+    @apply w-full px-4 py-3 bg-white border border-border rounded-xl
+           focus:outline-none focus:border-primary focus:ring-2
+           focus:ring-primary/20 transition-all duration-200;
+  }
+
+  .tag {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  }
+
+  .tag-primary {
+    @apply tag bg-primary-light text-primary;
+  }
+
+  .tag-secondary {
+    @apply tag bg-secondary-light text-secondary;
+  }
+
+  .tag-accent {
+    @apply tag bg-accent-light text-amber-600;
+  }
+
+  .glass {
+    @apply bg-white/80 backdrop-blur-md;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+  }
+}
+
+@layer utilities {
+  .safe-top {
+    padding-top: max(env(safe-area-inset-top), 12px);
+  }
+
+  .safe-bottom {
+    padding-bottom: max(env(safe-area-inset-bottom), 12px);
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}

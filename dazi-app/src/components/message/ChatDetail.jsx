@@ -1,9 +1,13 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, MoreHorizontal, Send, Calendar, Sparkles, X } from 'lucide-react'
+import { ArrowLeft, MoreHorizontal, Send, Calendar, Sparkles, X, Lightbulb } from 'lucide-react'
 import { Avatar, Tag, Button } from '../ui'
 import { agentSuggestions, meetupInvites } from '../../data/mockData'
-import AgentPanel from './AgentPanel'
+import { defaultAgentConfig, generateSilenceReminder } from '../../data/agentData'
+import ChatAgentPanel from './ChatAgentPanel'
+import AgentDraftGeneratorModal from './AgentDraftGeneratorModal'
+import AgentInterpretMessageModal from './AgentInterpretMessageModal'
+import PrivateAgentChatPanel from './PrivateAgentChatPanel'
 import MeetupCard from './MeetupCard'
 
 export default function ChatDetail({ chat, onBack }) {
@@ -11,7 +15,12 @@ export default function ChatDetail({ chat, onBack }) {
   const [inputText, setInputText] = useState('')
   const [showAgent, setShowAgent] = useState(false)
   const [showMeetupModal, setShowMeetupModal] = useState(false)
+  const [showDraftModal, setShowDraftModal] = useState(false)
+  const [showInterpretModal, setShowInterpretModal] = useState(false)
+  const [showPrivateChat, setShowPrivateChat] = useState(false)
+  const [selectedMessage, setSelectedMessage] = useState(null)
   const [meetups, setMeetups] = useState(meetupInvites.filter(m => m.chatId === chat.id))
+  const [agentConfig] = useState(defaultAgentConfig)
 
   const handleSend = () => {
     if (!inputText.trim()) return
@@ -24,8 +33,14 @@ export default function ChatDetail({ chat, onBack }) {
     setShowAgent(false)
   }
 
-  const handleMeetupSuggestion = () => {
+  const handleSelectTopic = (topic) => {
+    setInputText(topic)
+    setShowAgent(false)
+  }
+
+  const handleMeetupSuggestion = (suggestion) => {
     setShowMeetupModal(true)
+    // 可以自动填充建议到表单
   }
 
   const handleSendMeetup = (meetup) => {
@@ -38,6 +53,25 @@ export default function ChatDetail({ chat, onBack }) {
     }])
     setShowMeetupModal(false)
   }
+
+  const handleInterpretMessage = () => {
+    // 获取最后一条对方的消息
+    const lastTheirMessage = [...messages].reverse().find(m => m.from === 'them')
+    if (lastTheirMessage) {
+      setSelectedMessage(lastTheirMessage)
+      setShowInterpretModal(true)
+    }
+  }
+
+  const handleShowReminder = () => {
+    const reminder = generateSilenceReminder(5, chat.partner.name, chat.sharedInterest)
+    if (reminder) {
+      setInputText(reminder)
+    }
+  }
+
+  // 生成沉默提醒
+  const showSilenceReminder = messages.length > 0 && !showAgent
 
   return (
     <div className="flex flex-col h-screen bg-background">
@@ -65,6 +99,26 @@ export default function ChatDetail({ chat, onBack }) {
         </div>
       </div>
 
+      {/* Silence Reminder */}
+      <AnimatePresence>
+        {showSilenceReminder && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="px-4 py-2 bg-amber-50 border-b border-amber-100"
+          >
+            <button
+              onClick={() => setShowAgent(true)}
+              className="flex items-center gap-2 text-sm text-amber-700"
+            >
+              <Lightbulb size={14} />
+              <span>你们已经 5 天没聊天了，要不要主动联系一下？</span>
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Messages */}
       <div className="flex-1 overflow-auto p-4 pb-32">
         {messages.map((msg, idx) => {
@@ -85,7 +139,7 @@ export default function ChatDetail({ chat, onBack }) {
               )}
               <div
                 className={`
-                  max-w-[75%] px-4 py-2.5 rounded-2xl
+                  max-w-[75%] px-4 py-2.5 rounded-2xl relative group
                   ${msg.from === 'me'
                     ? 'bg-primary text-white rounded-br-md'
                     : 'bg-white text-text-primary rounded-bl-md shadow-sm'
@@ -93,6 +147,21 @@ export default function ChatDetail({ chat, onBack }) {
                 `}
               >
                 <p className="text-sm leading-relaxed">{msg.text}</p>
+                {/* 消息操作按钮 */}
+                {msg.from === 'them' && (
+                  <div className="absolute -right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      onClick={() => {
+                        setSelectedMessage(msg)
+                        setShowInterpretModal(true)
+                      }}
+                      className="p-1.5 bg-white rounded-full shadow-md"
+                      title="让小搭帮我理解"
+                    >
+                      <Lightbulb size={14} className="text-purple-500" />
+                    </button>
+                  </div>
+                )}
               </div>
             </motion.div>
           )
@@ -100,12 +169,20 @@ export default function ChatDetail({ chat, onBack }) {
       </div>
 
       {/* Agent Panel */}
-      <AgentPanel
-        suggestions={agentSuggestions}
+      <ChatAgentPanel
         isOpen={showAgent}
         onClose={() => setShowAgent(false)}
+        chat={chat}
+        agentConfig={agentConfig}
+        onSelectTopic={handleSelectTopic}
         onSelectDraft={handleSelectDraft}
         onMeetupSuggestion={handleMeetupSuggestion}
+        onPrivateChat={() => {
+          setShowAgent(false)
+          setShowPrivateChat(true)
+        }}
+        onInterpretMessage={handleInterpretMessage}
+        onShowReminder={showSilenceReminder ? handleShowReminder : null}
       />
 
       {/* Bottom Input */}
@@ -117,7 +194,7 @@ export default function ChatDetail({ chat, onBack }) {
             className={`
               w-12 h-12 rounded-full flex items-center justify-center transition-all
               ${showAgent
-                ? 'bg-gradient-to-br from-amber-400 to-orange-500 shadow-lg'
+                ? 'bg-gradient-to-br from-purple-400 to-blue-400 shadow-lg'
                 : 'bg-gray-100'
               }
             `}
@@ -133,6 +210,15 @@ export default function ChatDetail({ chat, onBack }) {
             placeholder="输入消息..."
             className="flex-1 px-4 py-3 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/20"
           />
+
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setShowDraftModal(true)}
+            className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center"
+            title="让小搭帮我说"
+          >
+            <Sparkles size={20} className="text-purple-600" />
+          </motion.button>
 
           <motion.button
             whileTap={{ scale: 0.95 }}
@@ -153,11 +239,31 @@ export default function ChatDetail({ chat, onBack }) {
         </div>
       </div>
 
-      {/* Meetup Modal */}
+      {/* Modals */}
       <MeetupModal
         isOpen={showMeetupModal}
         onClose={() => setShowMeetupModal(false)}
         onSend={handleSendMeetup}
+      />
+
+      <AgentDraftGeneratorModal
+        isOpen={showDraftModal}
+        onClose={() => setShowDraftModal(false)}
+        onSelectDraft={handleSelectDraft}
+        agentConfig={agentConfig}
+      />
+
+      <AgentInterpretMessageModal
+        isOpen={showInterpretModal}
+        onClose={() => setShowInterpretModal(false)}
+        message={selectedMessage}
+        agentConfig={agentConfig}
+      />
+
+      <PrivateAgentChatPanel
+        isOpen={showPrivateChat}
+        onClose={() => setShowPrivateChat(false)}
+        agentConfig={agentConfig}
       />
     </div>
   )
@@ -206,11 +312,20 @@ function MeetupModal({ isOpen, onClose, onSend }) {
         onClick={(e) => e.stopPropagation()}
         className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl p-6 safe-bottom"
       >
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-4">
           <h3 className="text-xl font-bold text-text-primary">约见面</h3>
           <button onClick={onClose}>
             <X size={24} className="text-text-secondary" />
           </button>
+        </div>
+
+        {/* 安全提示 */}
+        <div className="bg-green-50 rounded-xl p-3 mb-4 flex items-start gap-2">
+          <span className="text-lg">🛡️</span>
+          <div>
+            <p className="text-xs text-green-700 font-medium">见面安全提醒</p>
+            <p className="text-xs text-green-600">首次见面建议选择公共场所，并告诉朋友你的行程。</p>
+          </div>
         </div>
 
         <div className="space-y-4">

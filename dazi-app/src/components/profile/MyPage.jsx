@@ -4,9 +4,11 @@ import ProfileIdentityCard from './ProfileIdentityCard'
 import ProfileCompletionCard from './ProfileCompletionCard'
 import GrowthGrid from './GrowthGrid'
 import MyAgentCard from './MyAgentCard'
+import MyAgentSettingsPage from './MyAgentSettingsPage'
 import RelationshipPreferenceCard from './RelationshipPreferenceCard'
 import PrivacySafetyList from './PrivacySafetyList'
 import SettingsList from './SettingsList'
+import { defaultAgentConfig } from '../../data/agentData'
 
 // Mock 数据
 const MOCK_USER = {
@@ -64,6 +66,8 @@ export default function MyPage() {
   const [growth] = useState(MOCK_GROWTH)
   const [agent, setAgent] = useState(MOCK_AGENT)
   const [preference, setPreference] = useState(MOCK_PREFERENCE)
+  const [agentConfig, setAgentConfig] = useState(defaultAgentConfig)
+  const [showAgentSettings, setShowAgentSettings] = useState(false)
 
   const handleToast = (message) => {
     toast(message)
@@ -109,9 +113,9 @@ export default function MyPage() {
         {/* 4. 我的 Agent 模块 */}
         <MyAgentCard
           agent={agent}
-          currentStyle={agent.style}
-          onStyleChange={(style) => setAgent(prev => ({ ...prev, style }))}
-          onSettings={() => handleToast('进入 Agent 设置页')}
+          currentStyle={agentConfig.persona}
+          onStyleChange={(style) => setAgentConfig(prev => ({ ...prev, persona: style }))}
+          onSettings={() => setShowAgentSettings(true)}
         />
 
         {/* 5. 关系偏好模块 */}
@@ -126,6 +130,14 @@ export default function MyPage() {
         {/* 7. 系统设置模块 */}
         <SettingsList onLogout={() => handleToast('已退出登录')} />
       </div>
+
+      {/* Agent 设置页面 */}
+      <MyAgentSettingsPage
+        isOpen={showAgentSettings}
+        onClose={() => setShowAgentSettings(false)}
+        agentConfig={agentConfig}
+        onUpdate={setAgentConfig}
+      />
     </div>
   )
 }

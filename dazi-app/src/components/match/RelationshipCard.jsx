@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion'
-import { Clock, Calendar, Award, Image } from 'lucide-react'
+import { Clock, Calendar, Award, Image, MessageSquare } from 'lucide-react'
 import { Avatar, Tag, ProgressBar } from '../ui'
 
-export default function RelationshipCard({ relationship, onClick }) {
+export default function RelationshipCard({ relationship, onClick, onChatClick }) {
   return (
     <motion.div
       whileTap={{ scale: 0.98 }}
@@ -79,13 +79,26 @@ export default function RelationshipCard({ relationship, onClick }) {
         </div>
       </div>
 
-      {/* 见面次数 */}
-      <div className="flex items-center justify-center gap-4 mt-4 pt-4 border-t border-border">
+      {/* 底部操作栏：见面次数 + 聊天按钮 */}
+      <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
         <div className="flex items-center gap-1 text-sm text-text-secondary">
           <Calendar size={16} />
           <span>线下见面</span>
+          <span className="font-semibold text-secondary">{relationship.meetups} 次</span>
         </div>
-        <span className="font-semibold text-secondary">{relationship.meetups} 次</span>
+
+        {/* 聊天按钮 */}
+        <motion.button
+          whileTap={{ scale: 0.95 }}
+          onClick={(e) => {
+            e.stopPropagation()
+            onChatClick?.(relationship)
+          }}
+          className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full text-sm font-medium"
+        >
+          <MessageSquare size={16} />
+          <span>聊天</span>
+        </motion.button>
       </div>
     </motion.div>
   )

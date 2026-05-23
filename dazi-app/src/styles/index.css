@@ -2,13 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 全局 CSS 变量 - 定义布局参数 */
+:root {
+  --bottom-tab-height: 72px;
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --total-bottom-height: calc(var(--bottom-tab-height) + var(--safe-area-bottom));
+}
+
 @layer base {
   * {
     -webkit-tap-highlight-color: transparent;
   }
 
-  html {
-    scroll-behavior: smooth;
+  html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 
   body {
@@ -16,6 +30,14 @@
     background-color: #FFFBF7;
     color: #2D3436;
     overscroll-behavior: none;
+    /* 触摸时允许滚动 */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #root {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
 
   ::selection {
@@ -76,14 +98,41 @@
 }
 
 @layer utilities {
+  /* 顶部安全区 */
   .safe-top {
     padding-top: max(env(safe-area-inset-top), 12px);
   }
 
+  /* 底部安全区 */
   .safe-bottom {
-    padding-bottom: max(env(safe-area-inset-bottom), 12px);
+    padding-bottom: var(--safe-area-bottom);
   }
 
+  /* 底部导航占位 - 用于页面内容区 */
+  .tab-bar-spacing {
+    padding-bottom: calc(var(--bottom-tab-height) + var(--safe-area-bottom));
+  }
+
+  /* 固定在底部导航上方的元素（如聊天输入框） */
+  .above-tab-bar {
+    bottom: calc(var(--bottom-tab-height) + var(--safe-area-bottom));
+  }
+
+  /* 全屏布局容器 */
+  .app-container {
+    height: 100dvh; /* 使用动态视口高度，适配移动端浏览器 */
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 主内容区域 - 占据剩余空间 */
+  .app-content {
+    flex: 1;
+    overflow: hidden;
+    min-height: 0; /* 关键：允许 flex 子项收缩 */
+  }
+
+  /* 隐藏滚动条 */
   .hide-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;

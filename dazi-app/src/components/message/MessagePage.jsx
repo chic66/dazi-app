@@ -19,39 +19,25 @@ export default function MessagePage() {
     )
   }
 
-  // 默认视图：左侧聊天列表 + 右侧 Agent 辅助面板
+  // 默认视图：左侧聊天列表
   return (
-    <div className="flex h-screen bg-background">
-      {/* 左侧：聊天列表 */}
-      <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-border">
-          <div className="p-4 safe-top">
-            <h1 className="text-xl font-bold text-text-primary">消息</h1>
-          </div>
-        </div>
-
-        {/* Chat List */}
-        <div className="flex-1 overflow-auto p-4 pb-24 space-y-3">
-          {chatList.map((chat) => (
-            <ChatListItem
-              key={chat.id}
-              chat={chat}
-              onClick={() => setActiveChat(chat)}
-            />
-          ))}
+    <div className="flex flex-col h-full bg-background">
+      {/* Header */}
+      <div className="flex-shrink-0 bg-background/95 backdrop-blur-md border-b border-border">
+        <div className="p-4 safe-top">
+          <h1 className="text-xl font-bold text-text-primary">消息</h1>
         </div>
       </div>
 
-      {/* 右侧：Agent 辅助面板 */}
-      <div className="w-80 border-l border-border bg-white hidden lg:block">
-        <AgentPanel
-          suggestions={agentSuggestions}
-          isOpen={true}
-          onClose={() => setShowAgent(false)}
-          onSelectDraft={(text) => console.log('Selected draft:', text)}
-          onMeetupSuggestion={() => console.log('Meetup suggestion clicked')}
-        />
+      {/* Chat List */}
+      <div className="flex-1 overflow-auto p-4 space-y-3">
+        {chatList.map((chat) => (
+          <ChatListItem
+            key={chat.id}
+            chat={chat}
+            onClick={() => setActiveChat(chat)}
+          />
+        ))}
       </div>
     </div>
   )

@@ -1,16 +1,15 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { matchCards as initialCards, myPartners, relationships } from '../../data/mockData'
+import { matchCards as initialCards } from '../../data/mockData'
 import { Tabs } from '../ui'
 import MatchCard from './MatchCard'
 import MatchSuccessModal from './MatchSuccessModal'
-import PartnerCard from './PartnerCard'
 import RelationshipCard from './RelationshipCard'
+import { MessageSquare } from 'lucide-react'
 
 const tabs = [
   { id: 'discover', label: '发现搭子' },
-  { id: 'my', label: '我的搭子' },
-  { id: 'growth', label: '关系成长' }
+  { id: 'my', label: '我的搭子' }
 ]
 
 export default function MatchPage({ onNavigateToChat }) {
@@ -19,6 +18,9 @@ export default function MatchPage({ onNavigateToChat }) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [showMatchModal, setShowMatchModal] = useState(false)
   const [matchedCard, setMatchedCard] = useState(null)
+
+  // 获取我的搭子列表（从 mockData 中导入）
+  const { relationships } = require('../../data/mockData')
 
   const handleDislike = () => {
     if (currentIndex < cards.length - 1) {
@@ -37,7 +39,6 @@ export default function MatchPage({ onNavigateToChat }) {
   }
 
   const handleViewDetails = () => {
-    // 占位功能
     console.log('查看详情')
   }
 
@@ -46,8 +47,12 @@ export default function MatchPage({ onNavigateToChat }) {
     onNavigateToChat?.()
   }
 
+  const handleChatClick = (relationship) => {
+    onNavigateToChat?.(relationship)
+  }
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-full">
       {/* Header */}
       <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-border">
         <div className="p-4 safe-top">
@@ -86,27 +91,15 @@ export default function MatchPage({ onNavigateToChat }) {
           </div>
         )}
 
-        {/* 我的搭子 */}
+        {/* 我的搭子 - 原"关系成长"页面 */}
         {activeTab === 'my' && (
-          <div className="space-y-3">
-            {myPartners.map((partner) => (
-              <PartnerCard
-                key={partner.id}
-                partner={partner}
-                onClick={() => onNavigateToChat?.()}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* 关系成长 */}
-        {activeTab === 'growth' && (
           <div className="space-y-4">
             {relationships.map((rel) => (
               <RelationshipCard
                 key={rel.id}
                 relationship={rel}
                 onClick={() => {}}
+                onChatClick={handleChatClick}
               />
             ))}
           </div>

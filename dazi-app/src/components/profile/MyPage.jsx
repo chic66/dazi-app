@@ -3,10 +3,13 @@ import { toast } from '../ui'
 import ProfileIdentityCard from './ProfileIdentityCard'
 import ProfileCompletionCard from './ProfileCompletionCard'
 import GrowthGrid from './GrowthGrid'
-import MyAgentCard from './MyAgentCard'
+import MyAgentPrivateCard from './MyAgentPrivateCard'
+import MyAgentChatModal from './MyAgentChatModal'
+import MyAgentSettingsPage from './MyAgentSettingsPage'
 import RelationshipPreferenceCard from './RelationshipPreferenceCard'
 import PrivacySafetyList from './PrivacySafetyList'
 import SettingsList from './SettingsList'
+import { defaultAgentConfig } from '../../data/agentData'
 
 // Mock 数据
 const MOCK_USER = {
@@ -44,12 +47,6 @@ const MOCK_GROWTH = {
   },
 }
 
-const MOCK_AGENT = {
-  name: '小搭',
-  style: 'gentle',
-  enabledPermissions: ['推荐破冰话题', '提醒联系搭子', '整理共同记忆', '线下安全提醒'],
-}
-
 const MOCK_PREFERENCE = {
   status: '开放认识新朋友',
   targetTypes: ['同性搭子', '异性搭子'],
@@ -62,8 +59,11 @@ export default function MyPage() {
   const [user] = useState(MOCK_USER)
   const [completion] = useState(MOCK_COMPLETION)
   const [growth] = useState(MOCK_GROWTH)
-  const [agent, setAgent] = useState(MOCK_AGENT)
   const [preference, setPreference] = useState(MOCK_PREFERENCE)
+  const [agentConfig, setAgentConfig] = useState(defaultAgentConfig)
+  const [showAgentSettings, setShowAgentSettings] = useState(false)
+  const [showAgentChat, setShowAgentChat] = useState(false)
+  const [initialMessage, setInitialMessage] = useState('')
 
   const handleToast = (message) => {
     toast(message)
@@ -77,6 +77,11 @@ export default function MyPage() {
       growth: '进入成长记录页',
     }
     handleToast(messages[type] || '点击了')
+  }
+
+  const handleOpenAgentChat = (message = '') => {
+    setInitialMessage(message)
+    setShowAgentChat(true)
   }
 
   return (
@@ -97,22 +102,21 @@ export default function MyPage() {
           onViewProfile={() => handleToast('查看我的主页')}
         />
 
-        {/* 2. 资料完整度卡片 */}
+        {/* 2. 我的 Agent 私密助手卡片 - 前置到第2位 */}
+        <MyAgentPrivateCard
+          agentConfig={agentConfig}
+          onOpenChat={handleOpenAgentChat}
+          onOpenSettings={() => setShowAgentSettings(true)}
+        />
+
+        {/* 3. 资料完整度卡片 */}
         <ProfileCompletionCard
           completion={completion}
           onComplete={() => handleToast('进入编辑资料页')}
         />
 
-        {/* 3. 我的兴趣与目标模块 */}
+        {/* 4. 我的兴趣与目标模块 */}
         <GrowthGrid data={growth} onItemClick={handleGrowthItemClick} />
-
-        {/* 4. 我的 Agent 模块 */}
-        <MyAgentCard
-          agent={agent}
-          currentStyle={agent.style}
-          onStyleChange={(style) => setAgent(prev => ({ ...prev, style }))}
-          onSettings={() => handleToast('进入 Agent 设置页')}
-        />
 
         {/* 5. 关系偏好模块 */}
         <RelationshipPreferenceCard
@@ -126,6 +130,22 @@ export default function MyPage() {
         {/* 7. 系统设置模块 */}
         <SettingsList onLogout={() => handleToast('已退出登录')} />
       </div>
+
+      {/* Agent 完整私聊弹窗 */}
+      <MyAgentChatModal
+        isOpen={showAgentChat}
+        onClose={() => setShowAgentChat(false)}
+        agentConfig={agentConfig}
+        initialMessage={initialMessage}
+      />
+
+      {/* Agent 设置页面 */}
+      <MyAgentSettingsPage
+        isOpen={showAgentSettings}
+        onClose={() => setShowAgentSettings(false)}
+        agentConfig={agentConfig}
+        onUpdate={setAgentConfig}
+      />
     </div>
   )
 }

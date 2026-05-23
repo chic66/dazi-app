@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { toast } from '../ui'
 import ProfileIdentityCard from './ProfileIdentityCard'
-import ProfileCompletionCard from './ProfileCompletionCard'
 import GrowthGrid from './GrowthGrid'
 import MyAgentPrivateCard from './MyAgentPrivateCard'
 import MyAgentChatModal from './MyAgentChatModal'
@@ -25,7 +24,7 @@ const MOCK_USER = {
 
 const MOCK_COMPLETION = {
   percent: 76,
-  missingItems: ['补充 1 个当前目标', '添加 2 张兴趣照片', '填写可提供价值'],
+  hint: '补充目标后推荐会更准'
 }
 
 const MOCK_GROWTH = {
@@ -65,10 +64,6 @@ export default function MyPage() {
   const [showAgentChat, setShowAgentChat] = useState(false)
   const [initialMessage, setInitialMessage] = useState('')
 
-  const handleToast = (message) => {
-    toast(message)
-  }
-
   const handleGrowthItemClick = (type) => {
     const messages = {
       interests: '进入兴趣栏目列表页',
@@ -76,7 +71,7 @@ export default function MyPage() {
       strengths: '进入特长编辑页',
       growth: '进入成长记录页',
     }
-    handleToast(messages[type] || '点击了')
+    toast(messages[type] || '点击了')
   }
 
   const handleOpenAgentChat = (message = '') => {
@@ -95,40 +90,35 @@ export default function MyPage() {
 
       {/* Content */}
       <div className="p-4 pb-32 space-y-4">
-        {/* 1. 顶部个人身份卡片 */}
+        {/* 1. 顶部个人身份卡片 - 内含资料完成度 */}
         <ProfileIdentityCard
           user={user}
-          onEditProfile={() => handleToast('进入编辑资料页')}
-          onViewProfile={() => handleToast('查看我的主页')}
+          completion={completion}
+          onEditProfile={() => toast('进入编辑资料页')}
+          onViewProfile={() => toast('查看我的主页')}
         />
 
-        {/* 2. 我的 Agent 私密助手卡片 - 前置到第2位 */}
+        {/* 2. 小搭私密关系好友卡片 - 前置到第2位 */}
         <MyAgentPrivateCard
           agentConfig={agentConfig}
           onOpenChat={handleOpenAgentChat}
           onOpenSettings={() => setShowAgentSettings(true)}
         />
 
-        {/* 3. 资料完整度卡片 */}
-        <ProfileCompletionCard
-          completion={completion}
-          onComplete={() => handleToast('进入编辑资料页')}
-        />
-
-        {/* 4. 我的兴趣与目标模块 */}
+        {/* 3. 我的兴趣与目标模块 */}
         <GrowthGrid data={growth} onItemClick={handleGrowthItemClick} />
 
-        {/* 5. 关系偏好模块 */}
+        {/* 4. 关系偏好模块 */}
         <RelationshipPreferenceCard
           preference={preference}
           onUpdate={setPreference}
         />
 
-        {/* 6. 隐私与安全模块 */}
-        <PrivacySafetyList onItemClick={(id) => handleToast(`进入${id}设置页`)} />
+        {/* 5. 隐私与安全模块 */}
+        <PrivacySafetyList onItemClick={(id) => toast(`进入${id}设置页`)} />
 
-        {/* 7. 系统设置模块 */}
-        <SettingsList onLogout={() => handleToast('已退出登录')} />
+        {/* 6. 系统设置模块 */}
+        <SettingsList onLogout={() => toast('已退出登录')} />
       </div>
 
       {/* Agent 完整私聊弹窗 */}

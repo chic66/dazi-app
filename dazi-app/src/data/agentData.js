@@ -67,6 +67,17 @@ export const defaultAgentConfig = {
   permissions: ['icebreaker', 'reminder', 'memory', 'chatAdvice', 'safety']
 }
 
+// 小搭私密对话数据
+export const myAgentData = {
+  name: '小搭',
+  style: '温柔鼓励型',
+  role: '你的私密关系好友',
+  privacyNotice: '这里只有你能看到，可以和我说说最近的关系困惑。',
+  lastUserThought: '我有点怕自己太主动，会不会显得打扰 TA。',
+  lastAgentReply: '靠近不一定是打扰，可以先用轻一点的方式表达，让对方有回应空间。',
+  inputPlaceholder: '把不好意思说出口的话先告诉我……'
+}
+
 // 破冰话术
 export const icebreakersByInterest = {
   'AI编程': [

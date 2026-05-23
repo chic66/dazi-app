@@ -1,8 +1,11 @@
 import { motion } from 'framer-motion'
-import { MapPin, Edit3, ExternalLink, Heart } from 'lucide-react'
+import { MapPin, Edit3, ExternalLink, Heart, Sparkles } from 'lucide-react'
 import { Avatar, Tag, Button } from '../ui'
+import { toast } from '../ui'
 
-export default function ProfileIdentityCard({ user, onEditProfile, onViewProfile }) {
+export default function ProfileIdentityCard({ user, completion, onEditProfile, onViewProfile }) {
+  const completionPercent = completion?.percent || 76
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -34,7 +37,7 @@ export default function ProfileIdentityCard({ user, onEditProfile, onViewProfile
       </div>
 
       {/* 兴趣标签 */}
-      <div className="flex flex-wrap gap-2 mb-5">
+      <div className="flex flex-wrap gap-2 mb-4">
         {user.interests.map((interest, idx) => (
           <motion.span
             key={idx}
@@ -46,6 +49,31 @@ export default function ProfileIdentityCard({ user, onEditProfile, onViewProfile
             {interest}
           </motion.span>
         ))}
+      </div>
+
+      {/* 资料完整度提示 - 轻量合并版 */}
+      <div
+        className="mb-4 p-3 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors"
+        onClick={() => toast('去完善资料')}
+      >
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-1.5">
+            <Sparkles size={12} className="text-amber-500" />
+            <span className="text-xs text-text-muted">资料完整度</span>
+          </div>
+          <span className="text-sm font-semibold text-amber-500">{completionPercent}%</span>
+        </div>
+        <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${completionPercent}%` }}
+            transition={{ delay: 0.3, duration: 0.6, ease: 'easeOut' }}
+            className="h-full bg-gradient-to-r from-amber-400 to-orange-400 rounded-full"
+          />
+        </div>
+        {completion?.hint && (
+          <p className="text-xs text-text-muted mt-1.5">{completion.hint}</p>
+        )}
       </div>
 
       {/* 操作按钮 */}

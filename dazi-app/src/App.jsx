@@ -9,8 +9,15 @@ import { Toast, registerToast } from './components/ui'
 const App = () => {
   const [activeTab, setActiveTab] = useState('home')
   const [toastMessage, setToastMessage] = useState(null)
+  const [pendingChat, setPendingChat] = useState(null)
 
   registerToast((message) => setToastMessage(message))
+
+  // 处理跳转聊天
+  const handleNavigateToChat = (chat) => {
+    setPendingChat(chat)
+    setActiveTab('message')
+  }
 
   useEffect(() => {
     if (toastMessage) {
@@ -24,9 +31,9 @@ const App = () => {
       case 'home':
         return <HomePage />
       case 'match':
-        return <MatchPage />
+        return <MatchPage onNavigateToChat={handleNavigateToChat} />
       case 'message':
-        return <MessagePage />
+        return <MessagePage pendingChat={pendingChat} onClearPendingChat={() => setPendingChat(null)} />
       case 'circle':
         return <CirclePage />
       case 'profile':

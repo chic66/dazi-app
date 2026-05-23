@@ -121,12 +121,13 @@ export const matchCards = [
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=500&fit=crop&crop=face',
       age: 24,
       distance: '1.2km',
+      city: '上海',
       bio: '健身小白求带！平时喜欢跳舞和拍照，希望能找到一起运动的伙伴~'
     },
     sharedInterests: ['健身', '摄影'],
     goal: '坚持健身 30 天',
     canOffer: '舞蹈教学',
-    agentReason: '她也在寻找健身搭子，你们可以互相监督。她会跳舞，可以教你，你教她健身基础，很好的互补组合！',
+    agentReason: '你们都在坚持健身，也都喜欢摄影。TA 可以教你跳舞，你可以陪 TA 一起做训练记录，很适合从共同目标开始。',
     willMatch: true
   },
   {
@@ -137,6 +138,7 @@ export const matchCards = [
       avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=500&fit=crop&crop=face',
       age: 28,
       distance: '2.5km',
+      city: '上海',
       bio: 'Full-stack 开发者，对 AI 很感兴趣。想找志同道合的朋友一起学习交流~'
     },
     sharedInterests: ['AI编程'],
@@ -153,6 +155,7 @@ export const matchCards = [
       avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=500&fit=crop&crop=face',
       age: 25,
       distance: '3.1km',
+      city: '上海',
       bio: '咖啡爱好者，喜欢探索各种咖啡店。也喜欢健身和户外活动～'
     },
     sharedInterests: ['健身', '咖啡'],
@@ -169,6 +172,7 @@ export const matchCards = [
       avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=500&fit=crop&crop=face',
       age: 27,
       distance: '1.8km',
+      city: '上海',
       bio: '业余摄影师，擅长人像和街头摄影。希望找一起拍照的搭子📸'
     },
     sharedInterests: ['摄影', '健身'],
@@ -228,32 +232,59 @@ export const myPartners = [
   }
 ]
 
-// 关系成长数据
+// 关系成长数据 - 每个关系绑定聊天对象
 export const relationships = [
   {
     id: 'r001',
     partnerId: 'p001',
+    buddyUserId: 'u011',  // 对应 chat001 的 partner.id
     teamName: '英语冲鸭',
     chemistry: 860,
     rank: 'Top 12%',
     stage: '好朋友',
     memories: [
-      { id: 'mem1', date: '3月15日', content: '第一次线下英语角，见面超开心！', image: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=300&h=200&fit=crop' },
-      { id: 'mem2', date: '3月22日', content: '一起看了英文电影，练了口语', image: null },
-      { id: 'mem3', date: '4月1日', content: '周末咖啡馆英语对话 2 小时', image: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=300&h=200&fit=crop' }
+      {
+        id: 'mem1',
+        date: '3月15日',
+        text: '第一次线下英语角，见面超开心！',
+        image: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=300&h=200&fit=crop'
+      },
+      {
+        id: 'mem2',
+        date: '3月22日',
+        text: '一起看了英文电影，练了口语',
+        image: null
+      },
+      {
+        id: 'mem3',
+        date: '4月1日',
+        text: '周末咖啡馆英语对话 2 小时',
+        image: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=300&h=200&fit=crop'
+      }
     ],
     meetups: 3
   },
   {
     id: 'r002',
     partnerId: 'p002',
+    buddyUserId: 'u012',  // 对应 chat002 的 partner.id
     teamName: '健身搭子',
     chemistry: 720,
     rank: 'Top 24%',
     stage: '搭子',
     memories: [
-      { id: 'mem4', date: '2月1日', content: '健身房第一次见面，卧推教学', image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=300&h=200&fit=crop' },
-      { id: 'mem5', date: '2月15日', content: '一起做了体测，进步明显', image: null }
+      {
+        id: 'mem4',
+        date: '2月1日',
+        text: '健身房第一次见面，卧推教学',
+        image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=300&h=200&fit=crop'
+      },
+      {
+        id: 'mem5',
+        date: '2月15日',
+        text: '一起做了体测，进步明显',
+        image: null
+      }
     ],
     meetups: 5
   }
@@ -415,6 +446,125 @@ export const chatList = [
       { id: 'msg018', from: 'me', text: '没问题，下次见面给你带' },
       { id: 'msg019', from: 'them', text: '《原子习惯》真的很不错！' }
     ]
+  }
+]
+
+// 互动通知数据
+export const interactionNotifications = [
+  {
+    id: 'int001',
+    user: {
+      id: 'u021',
+      name: '小雅',
+      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face'
+    },
+    type: 'like',
+    target: '你的健身动态',
+    content: '今天完成了 5 公里跑步打卡',
+    time: '2小时前'
+  },
+  {
+    id: 'int002',
+    user: {
+      id: 'u022',
+      name: 'Alex',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face'
+    },
+    type: 'comment',
+    target: '你的 AI 学习记录',
+    content: '这个工具我也在用！互相监督一下～',
+    time: '3小时前'
+  },
+  {
+    id: 'int003',
+    user: {
+      id: 'u023',
+      name: '婷婷',
+      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=face'
+    },
+    type: 'collect',
+    target: '你的摄影作品',
+    content: '构图很棒！想学习一下',
+    time: '昨天'
+  },
+  {
+    id: 'int004',
+    user: {
+      id: 'u024',
+      name: 'Leo',
+      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face'
+    },
+    type: 'follow',
+    target: '你',
+    content: '关注了你',
+    time: '昨天'
+  },
+  {
+    id: 'int005',
+    user: {
+      id: 'u025',
+      name: '阿杰',
+      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face'
+    },
+    type: 'like',
+    target: '你的读书笔记',
+    content: '《深度工作》确实很值得读！',
+    time: '2天前'
+  }
+]
+
+// 请求通知数据
+export const requestNotifications = [
+  {
+    id: 'req001',
+    user: {
+      id: 'u031',
+      name: 'Emma',
+      avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&h=200&fit=crop&crop=face'
+    },
+    type: 'match',
+    reason: '英语学习搭子',
+    sharedInterest: '英语学习',
+    content: '你们都把英语学习列为了目标，很适合组队！',
+    time: '刚刚'
+  },
+  {
+    id: 'req002',
+    user: {
+      id: 'u032',
+      name: '阿Ken',
+      avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop&crop=face'
+    },
+    type: 'invite',
+    reason: '周末一起健身',
+    content: '发现你们都在坚持健身，想约你一起去健身房！',
+    location: '附近健身房',
+    time: '1小时前'
+  },
+  {
+    id: 'req003',
+    user: {
+      id: 'u033',
+      name: '小雨',
+      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=face'
+    },
+    type: 'invite',
+    reason: '一起参加读书会',
+    content: '周末有个读书会，想约你一起去！',
+    location: '静安区图书馆',
+    time: '昨天'
+  },
+  {
+    id: 'req004',
+    user: {
+      id: 'u034',
+      name: '小美',
+      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face'
+    },
+    type: 'meetup',
+    reason: '约线下见面',
+    content: '感觉我们很合拍，要不要线下见一面？',
+    time: '2天前'
   }
 ]
 

@@ -118,7 +118,7 @@ export const matchCards = [
     user: {
       id: 'u007',
       name: '小雅',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=500&fit=crop&crop=face',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face',
       age: 24,
       distance: '1.2km',
       city: '上海',
@@ -126,8 +126,9 @@ export const matchCards = [
     },
     sharedInterests: ['健身', '摄影'],
     goal: '坚持健身 30 天',
-    canOffer: '舞蹈教学',
-    agentReason: '你们都在坚持健身，也都喜欢摄影。TA 可以教你跳舞，你可以陪 TA 一起做训练记录，很适合从共同目标开始。',
+    canOffer: '舞蹈教学、动作指导',
+    exchangeValue: 'TA 可以教你跳舞基础，你陪 TA 做健身打卡记录，互相监督更易坚持',
+    agentReason: '你们都在坚持健身，也都喜欢摄影。TA 刚入门想找人一起训练，而你有丰富的健身经验可以指导 TA，TA 也可以教你跳舞基础。这是一个很好的互补组合！',
     willMatch: true
   },
   {
@@ -135,7 +136,7 @@ export const matchCards = [
     user: {
       id: 'u008',
       name: 'David',
-      avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=500&fit=crop&crop=face',
+      avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=600&fit=crop&crop=face',
       age: 28,
       distance: '2.5km',
       city: '上海',
@@ -143,8 +144,9 @@ export const matchCards = [
     },
     sharedInterests: ['AI编程'],
     goal: '完成 AI 项目实战',
-    canOffer: '编程指导',
-    agentReason: '你们都在学 AI，有共同语言！他是开发者，可以给你很多实战建议，是个很好的学习搭子选择。',
+    canOffer: '编程指导、技术方案咨询',
+    exchangeValue: 'TA 是资深开发者，可以帮你解答 AI 学习中的技术问题；你也可以分享你独特的思考视角，碰撞出更好的创意',
+    agentReason: '你们都在学 AI，有共同语言！TA 是专业开发者，可以给你很多实战建议和项目经验分享，而你有独特的行业视角可以丰富 TA 的思考方式。这是难得的学习搭子组合！',
     willMatch: false
   },
   {
@@ -152,7 +154,7 @@ export const matchCards = [
     user: {
       id: 'u009',
       name: '琪琪',
-      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=500&fit=crop&crop=face',
+      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=600&fit=crop&crop=face',
       age: 25,
       distance: '3.1km',
       city: '上海',
@@ -160,8 +162,9 @@ export const matchCards = [
     },
     sharedInterests: ['健身', '咖啡'],
     goal: '学会手冲咖啡',
-    canOffer: '咖啡知识',
-    agentReason: '你们都喜欢咖啡和健身，共同话题很多！她对咖啡很有研究，可以带你探索上海的咖啡店～',
+    canOffer: '咖啡知识、上海探店指南',
+    exchangeValue: 'TA 熟悉上海的咖啡文化，可以带你探索各种小众咖啡店；你热爱健身，可以约 TA 一起去运动，互相监督打卡',
+    agentReason: '你们都喜欢咖啡和健身，共同话题很多！TA 对咖啡很有研究，可以带你探索上海的咖啡店，你们也可以约在咖啡馆一起工作学习，效率更高！',
     willMatch: true
   },
   {
@@ -169,7 +172,7 @@ export const matchCards = [
     user: {
       id: 'u010',
       name: '阿Ken',
-      avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=500&fit=crop&crop=face',
+      avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=600&fit=crop&crop=face',
       age: 27,
       distance: '1.8km',
       city: '上海',
@@ -177,8 +180,9 @@ export const matchCards = [
     },
     sharedInterests: ['摄影', '健身'],
     goal: '完成 50 组人像拍摄',
-    canOffer: '摄影指导',
-    agentReason: '你们都是摄影爱好者！他可以帮你拍出好看的健身照片，你也可以做他的健身模特，互惠互利～',
+    canOffer: '摄影指导、后期修图',
+    exchangeValue: 'TA 擅长人像摄影，可以帮你拍出好看的健身照/证件照；你经常健身，可以做 TA 的专属模特，互相成长',
+    agentReason: '你们都是摄影爱好者！TA 可以帮你拍出好看的健身照片，你也可以做 TA 的健身模特，互惠互利。而且你们都住在附近，很适合约线下一起拍照！',
     willMatch: false
   }
 ]
@@ -223,12 +227,42 @@ export const myPartners = [
       avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=face',
       online: true
     },
-    chemistry: 580,
+    chemistry: 420,
     sharedGoal: '每月读两本书',
     lastInteraction: '昨天',
     lastMessage: '《原子习惯》真的很不错！',
     meetupStatus: '上次见面 5 天前',
+    meetupCount: 1
+  },
+  {
+    id: 'p004',
+    user: {
+      id: 'u014',
+      name: 'Alex',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face',
+      online: true
+    },
+    chemistry: 580,
+    sharedGoal: '一起学 AI',
+    lastInteraction: '刚刚',
+    lastMessage: 'Agent 教程第三章你看了吗？',
+    meetupStatus: '本周已见面',
     meetupCount: 2
+  },
+  {
+    id: 'p005',
+    user: {
+      id: 'u015',
+      name: '小雅',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face',
+      online: false
+    },
+    chemistry: 640,
+    sharedGoal: '咖啡探店',
+    lastInteraction: '2天前',
+    lastMessage: '愚园路那家店真的超棒！',
+    meetupStatus: '下次见面待定',
+    meetupCount: 4
   }
 ]
 
@@ -239,9 +273,10 @@ export const relationships = [
     partnerId: 'p001',
     buddyUserId: 'u011',  // 对应 chat001 的 partner.id
     teamName: '英语冲鸭',
-    chemistry: 860,
-    rank: 'Top 12%',
     stage: '好朋友',
+    chemistry: 860,
+    rank: 12,
+    recentInteraction: '8 天连续互动',
     memories: [
       {
         id: 'mem1',
@@ -269,9 +304,10 @@ export const relationships = [
     partnerId: 'p002',
     buddyUserId: 'u012',  // 对应 chat002 的 partner.id
     teamName: '健身搭子',
-    chemistry: 720,
-    rank: 'Top 24%',
     stage: '搭子',
+    chemistry: 720,
+    rank: 24,
+    recentInteraction: '3 天连续互动',
     memories: [
       {
         id: 'mem4',
@@ -287,6 +323,81 @@ export const relationships = [
       }
     ],
     meetups: 5
+  },
+  {
+    id: 'r003',
+    partnerId: 'p003',
+    buddyUserId: 'u013',  // 对应 chat003 的 partner.id
+    teamName: '读书会友',
+    stage: '刚建立',
+    chemistry: 420,
+    rank: 45,
+    recentInteraction: '昨天互动',
+    memories: [
+      {
+        id: 'mem6',
+        date: '1月20日',
+        text: '第一次在图书馆相遇，聊了很久的书',
+        image: null
+      }
+    ],
+    meetups: 1
+  },
+  {
+    id: 'r004',
+    partnerId: 'p004',
+    buddyUserId: 'u014',
+    teamName: 'AI 学习小组',
+    stage: '稳定互动',
+    chemistry: 580,
+    rank: 18,
+    recentInteraction: '5 天连续互动',
+    memories: [
+      {
+        id: 'mem7',
+        date: '4月10日',
+        text: '一起参加 AI 分享会，认识了新朋友',
+        image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=300&h=200&fit=crop'
+      },
+      {
+        id: 'mem8',
+        date: '4月15日',
+        text: '线上一起学 Agent 教程，互相答疑',
+        image: null
+      },
+      {
+        id: 'mem9',
+        date: '4月20日',
+        text: '咖啡馆讨论项目方案，收获很大',
+        image: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=300&h=200&fit=crop'
+      }
+    ],
+    meetups: 2
+  },
+  {
+    id: 'r005',
+    partnerId: 'p005',
+    buddyUserId: 'u015',
+    teamName: '咖啡探店',
+    stage: '搭子',
+    chemistry: 640,
+    rank: 31,
+    recentInteraction: '2 天前互动',
+    memories: [
+      {
+        id: 'mem10',
+        date: '3月5日',
+        text: '一起探店愚园路新开的咖啡馆',
+        image: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=300&h=200&fit=crop'
+      },
+      {
+        id: 'mem11',
+        date: '3月12日',
+        text: '教 TA 拉花，成功拉出心形',
+        image: null
+      }
+    ],
+    meetups: 4
   }
 ]
 
@@ -434,7 +545,7 @@ export const chatList = [
       name: '小雨',
       avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=face'
     },
-    chemistry: 580,
+    chemistry: 420,
     sharedInterest: '读书',
     lastMessage: '《原子习惯》真的很不错！',
     lastTime: '昨天',
@@ -445,6 +556,46 @@ export const chatList = [
       { id: 'msg017', from: 'them', text: '哇，我也想读！能借我吗？' },
       { id: 'msg018', from: 'me', text: '没问题，下次见面给你带' },
       { id: 'msg019', from: 'them', text: '《原子习惯》真的很不错！' }
+    ]
+  },
+  {
+    id: 'chat004',
+    partner: {
+      id: 'u014',
+      name: 'Alex',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face'
+    },
+    chemistry: 580,
+    sharedInterest: 'AI',
+    lastMessage: 'Agent 教程第三章你看了吗？',
+    lastTime: '刚刚',
+    unread: 1,
+    messages: [
+      { id: 'msg020', from: 'them', text: '嗨！看到你也在学 AI，有点激动！' },
+      { id: 'msg021', from: 'me', text: '是呀！刚入门，感觉资料太多了' },
+      { id: 'msg022', from: 'them', text: '我整理了一份学习路线，要不要分享给你？' },
+      { id: 'msg023', from: 'me', text: '太好了！谢谢！' },
+      { id: 'msg024', from: 'them', text: 'Agent 教程第三章你看了吗？' }
+    ]
+  },
+  {
+    id: 'chat005',
+    partner: {
+      id: 'u015',
+      name: '小雅',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face'
+    },
+    chemistry: 640,
+    sharedInterest: '咖啡',
+    lastMessage: '愚园路那家店真的超棒！',
+    lastTime: '2天前',
+    unread: 0,
+    messages: [
+      { id: 'msg025', from: 'them', text: '上次去的那家咖啡馆你还记得吗？' },
+      { id: 'msg026', from: 'me', text: '记得！那个手冲真的很好喝' },
+      { id: 'msg027', from: 'them', text: '下次带你试试他们家的拿铁' },
+      { id: 'msg028', from: 'me', text: '好呀！我也想学拉花' },
+      { id: 'msg029', from: 'them', text: '愚园路那家店真的超棒！' }
     ]
   }
 ]

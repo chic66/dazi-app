@@ -1,30 +1,31 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { matchCards as initialCards } from '../../data/mockData'
+import { matchCards as initialCards, relationships, chatList } from '../../data/mockData'
 import { Tabs } from '../ui'
 import MatchCard from './MatchCard'
 import MatchSuccessModal from './MatchSuccessModal'
 import RelationshipCard from './RelationshipCard'
-import { MessageSquare } from 'lucide-react'
+import { toast } from '../ui'
 
 const tabs = [
-  { id: 'discover', label: '发现搭子' },
-  { id: 'my', label: '我的搭子' }
+  { id: 'my', label: '我的搭子' },
+  { id: 'discover', label: 'Agent 推荐搭子' }
 ]
 
 export default function MatchPage({ onNavigateToChat }) {
-  const [activeTab, setActiveTab] = useState('discover')
+  const [activeTab, setActiveTab] = useState('my')
   const [cards, setCards] = useState(initialCards)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [showMatchModal, setShowMatchModal] = useState(false)
   const [matchedCard, setMatchedCard] = useState(null)
-
-  // 获取我的搭子列表（从 mockData 中导入）
-  const { relationships } = require('../../data/mockData')
+  const [showEmpty, setShowEmpty] = useState(false)
 
   const handleDislike = () => {
     if (currentIndex < cards.length - 1) {
+      toast('已跳过')
       setCurrentIndex(currentIndex + 1)
+    } else {
+      setShowEmpty(true)
     }
   }
 
@@ -34,12 +35,15 @@ export default function MatchPage({ onNavigateToChat }) {
       setMatchedCard(card)
       setShowMatchModal(true)
     } else if (currentIndex < cards.length - 1) {
+      toast('已加入感兴趣列表')
       setCurrentIndex(currentIndex + 1)
+    } else {
+      setShowEmpty(true)
     }
   }
 
   const handleViewDetails = () => {
-    console.log('查看详情')
+    toast('查看详情')
   }
 
   const handleStartChat = () => {
@@ -48,7 +52,23 @@ export default function MatchPage({ onNavigateToChat }) {
   }
 
   const handleChatClick = (relationship) => {
-    onNavigateToChat?.(relationship)
+    const chatPartner = relationship.buddyUserId
+    const chat = chatList.find(c => c.partner.id === chatPartner)
+    if (chat) {
+      onNavigateToChat?.(chat)
+    } else {
+      toast('聊天功能即将可用')
+    }
+  }
+
+  const handleRelationshipClick = (relationship) => {
+    toast(`进入 ${relationship.teamName} 详情页`)
+  }
+
+  // 重置推荐列表
+  const handleResetCards = () => {
+    setCurrentIndex(0)
+    setShowEmpty(false)
   }
 
   return (
@@ -61,11 +81,32 @@ export default function MatchPage({ onNavigateToChat }) {
         </div>
       </div>
 
-      <div className="p-4 pb-24">
-        {/* 发现搭子 */}
+      <div className="pb-24">
+        {/* 我的搭子 */}
+        {activeTab === 'my' && (
+          <div className="p-4">
+            {/* 引导文案 */}
+            <div className="mb-4 text-center">
+              <p className="text-sm text-text-muted">你的关系正在这里慢慢长出来</p>
+            </div>
+
+            <div className="space-y-4">
+              {relationships.map((rel) => (
+                <RelationshipCard
+                  key={rel.id}
+                  relationship={rel}
+                  onClick={() => handleRelationshipClick(rel)}
+                  onChatClick={handleChatClick}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Agent 推荐搭子 */}
         {activeTab === 'discover' && (
-          <div className="relative h-[calc(100vh-180px)]">
-            {currentIndex < cards.length ? (
+          <div className="relative" style={{ height: 'calc(100vh - 200px)' }}>
+            {!showEmpty && currentIndex < cards.length ? (
               <AnimatePresence>
                 <MatchCard
                   key={cards[currentIndex].id}
@@ -76,32 +117,25 @@ export default function MatchPage({ onNavigateToChat }) {
                 />
               </AnimatePresence>
             ) : (
-              <div className="flex flex-col items-center justify-center h-full text-center">
+              <div className="flex flex-col items-center justify-center h-full text-center px-6">
                 <div className="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center mb-4">
                   <span className="text-5xl">🔍</span>
                 </div>
                 <h3 className="text-lg font-semibold text-text-primary mb-2">
-                  附近没有更多搭子了
+                  暂时没有更多推荐了
                 </h3>
-                <p className="text-text-secondary">
-                  稍后再来看看，或者扩大搜索范围
+                <p className="text-text-secondary text-sm mb-6">
+                  稍后再来看看，或者告诉我们在找什么样的搭子
                 </p>
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleResetCards}
+                  className="px-6 py-2 bg-primary text-white rounded-full text-sm font-medium"
+                >
+                  重新看看
+                </motion.button>
               </div>
             )}
-          </div>
-        )}
-
-        {/* 我的搭子 - 原"关系成长"页面 */}
-        {activeTab === 'my' && (
-          <div className="space-y-4">
-            {relationships.map((rel) => (
-              <RelationshipCard
-                key={rel.id}
-                relationship={rel}
-                onClick={() => {}}
-                onChatClick={handleChatClick}
-              />
-            ))}
           </div>
         )}
       </div>

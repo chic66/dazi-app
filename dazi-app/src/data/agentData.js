@@ -73,9 +73,22 @@ export const myAgentData = {
   style: '温柔鼓励型',
   role: '你的私密关系好友',
   privacyNotice: '这里只有你能看到，可以和我说说最近的关系困惑。',
-  lastUserThought: '我有点怕自己太主动，会不会显得打扰 TA。',
-  lastAgentReply: '靠近不一定是打扰，可以先用轻一点的方式表达，让对方有回应空间。',
-  inputPlaceholder: '把不好意思说出口的话先告诉我……'
+  inputPlaceholder: '慢慢说，我在听……',
+  // 直接聊天气泡预览 - 不使用转述句式
+  chatPreview: [
+    {
+      from: 'agent',
+      text: '靠近不一定是打扰，可以先用轻一点的方式表达，让对方有回应空间。'
+    },
+    {
+      from: 'user',
+      text: '我就是怕自己太主动，会显得不自然。'
+    },
+    {
+      from: 'agent',
+      text: '那我们先不急着推进。你可以把想说的话先放在这里，我帮你调得更自然一点。'
+    }
+  ]
 }
 
 // 破冰话术

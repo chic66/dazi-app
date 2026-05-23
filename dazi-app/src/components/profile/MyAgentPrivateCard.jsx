@@ -48,26 +48,35 @@ export default function MyAgentPrivateCard({ agentConfig, onOpenChat }) {
         </p>
       </div>
 
-      {/* 上次聊天内容 */}
-      <div className="mb-4">
-        <p className="text-xs text-text-muted mb-2">上次聊天</p>
-        <div className="space-y-2">
-          <div className="bg-white/40 rounded-xl rounded-tl-none p-3">
-            <p className="text-xs text-text-muted mb-1">你说：</p>
-            <p className="text-sm text-text-secondary leading-relaxed">
-              "{agentInfo.lastUserThought}"
-            </p>
-          </div>
-          <div className="bg-purple-100/60 rounded-xl rounded-tl-none p-3">
-            <p className="text-xs text-purple-600/70 mb-1 flex items-center gap-1">
-              <span>{currentPersona.emoji}</span>
-              <span>小搭回你：</span>
-            </p>
-            <p className="text-sm text-purple-800 leading-relaxed">
-              "{agentInfo.lastAgentReply}"
-            </p>
-          </div>
-        </div>
+      {/* 直接聊天气泡预览 - 亲密感 */}
+      <div className="mb-4 space-y-3">
+        {agentInfo.chatPreview.map((msg, idx) => (
+          msg.from === 'agent' ? (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: idx * 0.1 }}
+              className="max-w-[90%]"
+            >
+              <div className="bg-white/70 backdrop-blur-sm rounded-2xl rounded-tl-md px-4 py-3 shadow-sm">
+                <p className="text-sm text-purple-800 leading-relaxed">{msg.text}</p>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, x: 10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: idx * 0.1 }}
+              className="ml-auto max-w-[85%]"
+            >
+              <div className="bg-purple-100/60 backdrop-blur-sm rounded-2xl rounded-tr-md px-4 py-3">
+                <p className="text-sm text-purple-700 leading-relaxed">{msg.text}</p>
+              </div>
+            </motion.div>
+          )
+        ))}
       </div>
 
       {/* 输入区域 */}
